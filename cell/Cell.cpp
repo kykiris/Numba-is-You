@@ -19,6 +19,7 @@ Cell::~Cell()
 
     //delete this;
     delete this->parent;
+    this->parent = nullptr;
     //////////   TODO END   ////////////////////////////////////
 }
 
@@ -154,10 +155,22 @@ Cell* Cell::GetNeighbor(Direction dir) const
     // If the cell is placed at the border of the map and the direction is outside the map, return nullptr.
     
     //TODO
+    // if(dir_row < 0 || dir_row > parent->GetRowsize()-1){
+    //     return nullptr;
+    // }
+    // if(dir_col < 0 || dir_col > parent->GetColsize()){
+    // }
+
+    if(parent->GetCell(dir_row, dir_col)->cellType==CellType::WALL){
+        return nullptr;
+    }
 
     // Else return the neighbor cell.
 
     //TODO
+    else{
+        return parent->GetCell(dir_row, dir_col);
+    }
 
     //////////   TODO END   ////////////////////////////////////
 }

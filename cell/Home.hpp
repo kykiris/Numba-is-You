@@ -7,23 +7,5 @@ class Home : public Cell{
 public:
     Home(Map* map, int row, int col);
     HomeCheckResult Check();
-}
+};
 //////////   TODO END   ///////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -18,8 +18,8 @@ CellObjBase::~CellObjBase()
 
     delete item;
     delete parent;
-    // item = nullptr;
-    // parent = nullptr;
+    item = nullptr;
+    parent = nullptr;
 
     //////////   TODO END   ////////////////////////////////////
 }
@@ -52,7 +52,7 @@ bool CellObjBase::TryMove(Direction dir)
         dir_col++;
     }
 
-    
+
 
 
 

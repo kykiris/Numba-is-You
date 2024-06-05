@@ -12,7 +12,10 @@ Home::Home(Map* map, int row, int col) : Cell(map, row, col)
 }
 
 HomeCheckResult Home::Check(){
-       
+
+//TODO
+//TODO
+//TODO      
 }
 
 

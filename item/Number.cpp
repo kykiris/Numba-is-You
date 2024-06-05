@@ -10,6 +10,6 @@ Number::Number(CellObjBase* obj, int value) : ItemBase(obj), value(value)
 //////////     TODO     ////////////////////////////////////
 // Define overrided functions from Number.hpp.
 
-
+// done in number.hpp
 
 //////////   TODO END   ////////////////////////////////////
