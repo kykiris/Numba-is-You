@@ -17,6 +17,7 @@ Cell::~Cell()
     //////////     TODO     ////////////////////////////////////
     // Modify destructor if you needed.
 
+    delete this->cellType;
     //////////   TODO END   ////////////////////////////////////
 }
 
@@ -29,7 +30,15 @@ void Cell::InitObject(const std::string& objType)
     // 3. push_back the object to the corresponding map->objects[].
 
 
-
+    delete obj;
+    if(objType == "Box"){
+        obj = new Box(this);
+        parent->objects[ObjectType::BOX].push_back(obj);
+    }
+    else if(objType == "Player"){
+        obj = new Player(this);
+        parent->objects[ObjectType::PLAYER].push_back(obj);
+    }
     //////////   TODO END   ////////////////////////////////////
 }
 
@@ -41,7 +50,15 @@ void Cell::SwapObject(Cell* other)
     // 2. If other->obj exists: change parent of other->obj.
     // 3. Swap this->obj and other->obj.
 
-
+    if(GetObject()!=nullptr){
+        this->obj->parent = other;
+    }
+    if(other->GetObject()!=nullptr){
+        other->obj->parent = this;
+    }
+    CellObjBase* tmp = this->obj;
+    this->obj = other->obj;
+    other->obj = tmp;
 
     //////////   TODO END   ////////////////////////////////////
 }
@@ -57,7 +74,22 @@ AttrType Cell::GetAttr() const
     // Implement Cell::GetAttr.
     // Default attr is NORMAL, but if this cell has an object, then OR(|) with the object's attr.
 
+    if(cellType == CellType::CELL){
+        //Terminal::Attr::NORMAL = ;
+        return Terminal::Attr::NORMAL;
+    }
+    else if(cellType == CellType::HOME){
 
+        if(GetObject()!=nullptr){
+            return Terminal::Attr::UNDERLINE | Terminal::Attr::DIM;
+        }
+        else{
+            return Terminal::Attr::UNDERLINE;
+        }
+    }
+    else if(cellType == CellType::WALL){
+        return Terminal::Attr::REVERSE;
+    }
 
     //////////   TODO END   ////////////////////////////////////
 }
@@ -67,8 +99,15 @@ ColorPair Cell::GetColorPair() const
     //////////     TODO     ////////////////////////////////////
     // Implement Cell::GetColorPair.
     // Default ColorPair is NORMAL, but if this->object is a player, then return PLAYER_NORMAL.
-
-
+    
+    
+    //TODO: kykiris
+    if(GetObject()->parent){
+        return ColorPair::PLAYER_NORMAL;
+    } 
+    else{
+        return ColorPair::NORMAL;
+    }
 
     //////////   TODO END   ////////////////////////////////////
 }
