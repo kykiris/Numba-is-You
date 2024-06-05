@@ -28,7 +28,21 @@ bool Player::TryPush(Direction dir)
 //////////     TODO     ////////////////////////////////////
 // Define overrided functions from Player.hpp.
 
+ObjectType Player::GetType() const{
+    return ObjectType::PLAYER;
+}
+AttrType Player::GetAttr() const{
+    return Terminal::Attr::NORMAL;
+}
 
+char Player::GetIcon() const{
+    if(GetItem()!=nullptr){
+        return GetItem()->GetIcon();
+    }
+    else{
+        return ' ';
+    }
+}
 
 
 

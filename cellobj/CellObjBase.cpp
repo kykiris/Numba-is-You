@@ -16,6 +16,11 @@ CellObjBase::~CellObjBase()
     //////////     TODO     ////////////////////////////////////
     // Modify destructor if you needed.
 
+    delete item;
+    delete parent;
+    // item = nullptr;
+    // parent = nullptr;
+
     //////////   TODO END   ////////////////////////////////////
 }
 
@@ -30,8 +35,24 @@ bool CellObjBase::TryMove(Direction dir)
     //    swap between the neighbor and return true
     // 5. If any one of 2 to 4 is false, then return false
 
+    bool movable = false;
 
+    int dir_row = parent->row;
+    int dir_col = parent->col;
+    if(dir==Direction::UP){
+        dir_row--;
+    }
+    else if(dir==Direction::DOWN){
+        dir_row++;
+    }
+    else if(dir==Direction::LEFT){
+        dir_col--;
+    }
+    else if(dir==Direction::RIGHT){
+        dir_col++;
+    }
 
+    
 
 
 

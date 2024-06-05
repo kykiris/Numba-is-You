@@ -20,5 +20,10 @@ public:
     // Implement Number::GetIcon.
     // Return the value in printable form.
 
+    
+    virtual ItemType GetType() { return ItemType::NUMBER; };
+    virtual char GetIcon() { return value+'0'; };
+
+
     //////////   TODO END   ////////////////////////////////////
 };

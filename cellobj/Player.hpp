@@ -20,5 +20,10 @@ public:
     // Implement Player::GetIcon.
     // Default icon is ' ', but if the player has an item, then return the item's icon.
 
+    virtual ObjectType GetType() const;
+    virtual AttrType GetAttr() const;
+
+    virtual char GetIcon() const;
+    
     //////////   TODO END   ////////////////////////////////////
 };

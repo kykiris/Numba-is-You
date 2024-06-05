@@ -8,7 +8,14 @@ Box::Box(Cell* cell) : CellObjBase(cell)
 // Define overrided functions from Box.hpp.
 
 
-
-
+ObjectType Box::GetType() const{
+    return ObjectType::BOX;
+}
+AttrType Box::GetAttr() const{
+    return Terminal::Attr::NORMAL;
+}
+char Box::GetIcon() const{
+    return GetItem()->GetIcon();
+}
 
 //////////   TODO END   ////////////////////////////////////

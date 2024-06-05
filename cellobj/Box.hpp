@@ -17,5 +17,9 @@ public:
     // Implement Box::GetIcon.
     // No default icon - return the item's icon.
 
+    virtual ObjectType GetType() const;
+    virtual AttrType GetAttr() const;
+    virtual char GetIcon() const;
+
     //////////   TODO END   ////////////////////////////////////
 };
