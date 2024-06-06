@@ -8,7 +8,7 @@
 
 Home::Home(Map* map, int row, int col) : Cell(map, row, col)
 {
-    this->cellType = CellType::CELL;
+    this->cellType = CellType::HOME;
 }
 
 HomeCheckResult Home::Check(){

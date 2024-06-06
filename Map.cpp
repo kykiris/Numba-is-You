@@ -21,6 +21,9 @@ Map::~Map()
 {
     //////////     TODO     ////////////////////////////////////
     // Modify destructor if you needed.
+    
+
+    // WE MUST!!!! TODO
 
     //////////   TODO END   ////////////////////////////////////
 }
@@ -45,12 +48,17 @@ void Map::Initialize(int rowsize, int colsize, std::istream& ist)
         std::getline(ist, line);
         int j=0;
         std::vector<Cell*> eachCells;
+        Cell* eachCell = 0;
         for(char c:line){
-            Cell* eachCell = new Cell(this, i, j);
-            eachCells.push_back(eachCell);
             if(c>='0' && c<='9'){
+                eachCell = new Home(this, i, j);
                 homes.push_back(eachCell);
             }
+            else{
+                eachCell = new Cell(this, i, j);
+                eachCells.push_back(eachCell);
+            }
+            
             j++;
         }
         cells.push_back(eachCells);
@@ -109,7 +117,14 @@ bool Map::IsCleared() const
     //////////     TODO     ////////////////////////////////////
     // Check if every home has the correct number.
 
+    bool isTrue = true;
+    for(auto h:homes){
+        if(h->Check() == HomeCheckResult::WRONG){
+            isTrue = false;
+        }
+    }
 
+    return isTrue;
 
     //////////   TODO END   ////////////////////////////////////
 }
@@ -122,8 +137,12 @@ void Map::SpawnGhosts()
     // Sort this->equals to match spawning order.
     // For every equal, evaluate left/upper expression, get result string, and spawn ghosts.
 
-
-
+    ItemBase* tmp = this->equals[0];
+    for(int i=1;i<equals.size();i++){
+        if(tmp->parent->parent->row > equals[i]->parent->parent->row){
+            //TODO
+        }
+    }
 
 
     //////////   TODO END   ////////////////////////////////////

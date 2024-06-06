@@ -7,6 +7,7 @@ Equal::Equal(CellObjBase *obj): ItemBase(obj) {
     
 }
 
+// Equal::~Equal(){}
 
 
 

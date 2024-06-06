@@ -3,3 +3,5 @@
 ItemBase::ItemBase(CellObjBase* obj) : parent(obj)
 {
 }
+
+// ItemBase::~ItemBase(){}

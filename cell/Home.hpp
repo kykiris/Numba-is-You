@@ -10,8 +10,6 @@ public:
     virtual AttrType GetAttr() const;
     virtual ColorPair GetColorPair() const;
     virtual char GetIcon() const;
-
-protected:
-int target_number;
+    int target_number;
 };
 //////////   TODO END   ///////////////////////////////////

@@ -84,6 +84,7 @@ void CellObjBase::InitItem(char itemIcon)
     else if(itemIcon == '='){
         Equal* newEqual = new Equal(this);
         // this->item = new Equal(this);
+        
         this->item = newEqual;
         parent->parent->equals.push_back(newEqual);
     }

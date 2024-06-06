@@ -30,4 +30,5 @@ public:
     virtual AttrType GetAttr() const;
     virtual ColorPair GetColorPair() const;
     virtual char GetIcon() const;
+    virtual HomeCheckResult Check(){ return HomeCheckResult::EMPTY;};
 };

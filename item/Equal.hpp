@@ -6,9 +6,10 @@
 class Equal: public ItemBase{
     public:
     Equal(CellObjBase * obj);
+    ~Equal() = default;
 
-    virtual ItemType GetType() const { return ItemType::EQUALS; };
-    virtual char GetIcon() const { return '='; };
+    ItemType GetType() const { return ItemType::EQUALS; };
+    char GetIcon() const { return '='; };
 };
 
 
