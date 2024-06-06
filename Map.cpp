@@ -41,7 +41,11 @@ void Map::Initialize(int rowsize, int colsize, std::istream& ist)
     // 1. Read cell map and construct each cell.
     // 2. Initialize each object and its item.
 
-
+    for(int i=0;i<rowsize;i++){
+        for(int j=0;j<colsize;j++){
+            
+        }
+    }
 
 
 

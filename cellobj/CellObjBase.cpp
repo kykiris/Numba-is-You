@@ -7,6 +7,8 @@
 #include "item/Operator.hpp"
 #include "item/Equal.hpp"
 
+#define DO_NOTHING
+
 CellObjBase::CellObjBase(Cell* cell) : parent(cell)
 {
 }
@@ -35,27 +37,26 @@ bool CellObjBase::TryMove(Direction dir)
     //    swap between the neighbor and return true
     // 5. If any one of 2 to 4 is false, then return false
 
-    bool movable = false;
-
-    int dir_row = parent->row;
-    int dir_col = parent->col;
-    if(dir==Direction::UP){
-        dir_row--;
+    if(parent->GetNeighbor(dir)!=nullptr){
+        
+        //check its cell type
+        if(parent->cellType!=CellType::WALL){
+            //check its object
+            if(parent->GetObject()==nullptr){
+                parent->SwapObject(parent->GetNeighbor(dir));
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
     }
-    else if(dir==Direction::DOWN){
-        dir_row++;
+    else{
+        return false;
     }
-    else if(dir==Direction::LEFT){
-        dir_col--;
-    }
-    else if(dir==Direction::RIGHT){
-        dir_col++;
-    }
-
-
-
-
-
     //////////   TODO END   ////////////////////////////////////
 }
 
@@ -71,7 +72,28 @@ void CellObjBase::InitItem(char itemIcon)
     // ‘@’: Do nothing (this indicates an empty player).
     // else: Don’t care (throwing runtime_error is best).
 
-
+    if(itemIcon == '+'){
+        this->item = new Operator(this, OpType::ADD);
+    }
+    else if(itemIcon=='-'){
+        this->item = new Operator(this, OpType::SUB);
+    }
+    else if(itemIcon == '*'){
+        this->item = new Operator(this, OpType::MUL);
+    }
+    else if(itemIcon == '='){
+        this->item = new Equal(this);
+        parent->parent->equals.push_back(this->item);
+    }
+    else if(itemIcon >= '0' && itemIcon <= '9'){
+        this->item = new Number(this, itemIcon-'0');
+    }
+    else if(itemIcon == '@'){
+        DO_NOTHING;
+    }
+    else{
+        throw std::runtime_error("Unavailable item");
+    }
 
 
 

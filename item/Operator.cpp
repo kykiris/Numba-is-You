@@ -7,7 +7,7 @@ Operator::Operator(CellObjBase* obj, OpType op) : ItemBase(obj), op(op)
 //////////     TODO     ////////////////////////////////////
 // Define overrided functions from Number.hpp.
 
-char Operator::GetIcon(){
+char Operator::GetIcon() const{
     if(this->op == OpType::ADD){
         return '+';
     }

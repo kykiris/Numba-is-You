@@ -20,8 +20,8 @@ public:
     // Implement Operator::GetIcon.
     // Return one of the character '+', '-', '*' that matches this->op.
 
-    virtual ItemType GetType() { return ItemType::OPERATOR; };
-    virtual char GetIcon();
+    virtual ItemType GetType() const { return ItemType::OPERATOR; };
+    virtual char GetIcon() const;
     
     //////////   TODO END   ////////////////////////////////////
 };

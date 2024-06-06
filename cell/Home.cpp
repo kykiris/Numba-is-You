@@ -12,7 +12,17 @@ Home::Home(Map* map, int row, int col) : Cell(map, row, col)
 }
 
 HomeCheckResult Home::Check(){
-
+    if(obj->GetItem()->GetType()==ItemType::NUMBER){
+        if(this->target_number == obj->GetItem()->GetIcon()){
+            return HomeCheckResult::CORRECT;
+        }
+        else{
+            return HomeCheckResult::WRONG;
+        }
+    }
+    else{
+        return HomeCheckResult::EMPTY;
+    }
 //TODO
 //TODO
 //TODO      
@@ -20,8 +30,10 @@ HomeCheckResult Home::Check(){
 
 
 
-
-
+//TODO
+AttrType Home::GetAttr() const{}
+ColorPair Home::GetColorPair() const{}
+char Home::GetIcon() const{}
 
 
 

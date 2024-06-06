@@ -10,6 +10,7 @@ private:
 
 public:
     Number(CellObjBase* obj, int value);
+    int GetValue();
 
     //////////     TODO     ////////////////////////////////////
     // Override virtual functions from ItemBase.
@@ -21,8 +22,8 @@ public:
     // Return the value in printable form.
 
     
-    virtual ItemType GetType() { return ItemType::NUMBER; };
-    virtual char GetIcon() { return value+'0'; };
+    virtual ItemType GetType() const { return ItemType::NUMBER; };
+    virtual char GetIcon() const { return value+'0'; };
 
 
     //////////   TODO END   ////////////////////////////////////

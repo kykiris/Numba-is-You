@@ -7,8 +7,8 @@ class Equal: public ItemBase{
     public:
     Equal(CellObjBase * obj);
 
-    virtual ItemType GetType() { return ItemType::EQUALS; };
-    virtual char GetIcon() { return '='; };
+    virtual ItemType GetType() const { return ItemType::EQUALS; };
+    virtual char GetIcon() const { return '='; };
 };
 
 
