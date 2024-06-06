@@ -13,7 +13,8 @@ Home::Home(Map* map, int row, int col) : Cell(map, row, col)
 
 HomeCheckResult Home::Check(){
     if(obj->GetItem()->GetType()==ItemType::NUMBER){
-        if(this->target_number == obj->GetItem()->GetIcon()){
+        int num_value = obj->GetItem()->GetIcon() - '0';
+        if(this->target_number == num_value){
             return HomeCheckResult::CORRECT;
         }
         else{
