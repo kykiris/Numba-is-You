@@ -82,8 +82,10 @@ void CellObjBase::InitItem(char itemIcon)
         this->item = new Operator(this, OpType::MUL);
     }
     else if(itemIcon == '='){
-        this->item = new Equal(this);
-        parent->parent->equals.push_back(this->item);
+        Equal* newEqual = new Equal(this);
+        // this->item = new Equal(this);
+        this->item = newEqual;
+        parent->parent->equals.push_back(newEqual);
     }
     else if(itemIcon >= '0' && itemIcon <= '9'){
         this->item = new Number(this, itemIcon-'0');

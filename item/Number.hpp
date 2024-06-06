@@ -10,7 +10,7 @@ private:
 
 public:
     Number(CellObjBase* obj, int value);
-    int GetValue();
+    // int GetValue();
 
     //////////     TODO     ////////////////////////////////////
     // Override virtual functions from ItemBase.

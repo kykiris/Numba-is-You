@@ -8,9 +8,9 @@ Number::Number(CellObjBase* obj, int value) : ItemBase(obj), value(value)
 }
 
 //
-int Number::GetValue(){
-    return this->value;
-}
+// int Number::GetValue(){
+//     return this->value;
+// }
 //
 
 //////////     TODO     ////////////////////////////////////

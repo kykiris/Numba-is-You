@@ -42,9 +42,38 @@ void Map::Initialize(int rowsize, int colsize, std::istream& ist)
     // 2. Initialize each object and its item.
 
     for(int i=0;i<rowsize;i++){
-        for(int j=0;j<colsize;j++){
-            
+        std::getline(ist, line);
+        int j=0;
+        std::vector<Cell*> eachCells;
+        for(char c:line){
+            Cell* eachCell = new Cell(this, i, j);
+            eachCells.push_back(eachCell);
+            if(c>='0' && c<='9'){
+                homes.push_back(eachCell);
+            }
+            j++;
         }
+        cells.push_back(eachCells);
+    }
+
+    // the code below needs #include <sstream>
+    // std::getline(ist, line);
+    // std::stringstream ss;
+    // ss << line;
+    // ss >> num_obj;
+
+    int num_obj;
+    ist >> num_obj;
+    ist.ignore();
+
+    std::string obj_type;
+    char objItem;
+    int objRow, objCol;
+    for(int i=0;i<num_obj;i++){
+        ist>>obj_type>>objItem>>objRow>>objCol;
+        ist.ignore();
+        GetCell(objRow, objCol)->InitObject(obj_type);
+        GetCell(objRow, objCol)->GetObject()->InitItem(objItem);
     }
 
 

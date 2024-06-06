@@ -7,7 +7,7 @@ Box::Box(Cell* cell) : CellObjBase(cell)
 //////////     TODO     ////////////////////////////////////
 // Define overrided functions from Box.hpp.
 
-
+Box::~Box(){};
 ObjectType Box::GetType() const{
     return ObjectType::BOX;
 }
