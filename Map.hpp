@@ -2,7 +2,6 @@
 #include <vector>
 #include <map>
 #include <stack>
-#include <array>
 
 #include "cell/Cell.hpp"
 #include "cellobj/Ghost.hpp"

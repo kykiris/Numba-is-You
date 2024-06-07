@@ -1,6 +1,6 @@
 //////////     TODO     ////////////////////////////////////
 // Implement the methods of your Equal class
-
+#pragma once
 #include "item/Equal.hpp"
 #include "Enums.hpp"
 #include "Map.hpp"

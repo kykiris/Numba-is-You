@@ -21,10 +21,11 @@ public:
     // Implement Number::GetIcon.
     // Return the value in printable form.
 
+
     
     virtual ItemType GetType() const { return ItemType::NUMBER; };
     virtual char GetIcon() const { return value+'0'; };
-
+    int GetNumber() {return value;};
 
     //////////   TODO END   ////////////////////////////////////
 };

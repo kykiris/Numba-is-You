@@ -244,9 +244,54 @@ void Map::SpawnGhosts()
 
         //now num will be ghost.
 
+        //first, let's make integer to char[]
+        std::vector<char> preGhost;
+        std::stack<char> GhostStack;
+        if(num<0){
+            preGhost.push_back('-');
+            num*=-1;
+        }
+        int afterCal = num;
+        while(afterCal % 10 != 0){
+            afterCal = afterCal % 10;
+            char c = afterCal + '0';
+            GhostStack.push(c);
+            if(afterCal<10){
+                break;
+            }
+        }
+        while(!GhostStack.empty()){
+            preGhost.push_back(GhostStack.top());
+            GhostStack.pop();
+        }
+
+        // Cell* GhostMaker = e->parent->parent;
+        int row = e->parent->parent->row;
+        int col = e->parent->parent->col;
+        for(auto g:preGhost){
+            // Direction::RIGHT
+            col++;
+            if(col >= this->GetColsize()){
+                break;
+            }
+            Cell* newCell = GetCell(row, col);
+            if(newCell->GetObject()->GetType() == ObjectType::BOX || newCell->GetObject()->GetType() == ObjectType::PLAYER){
+                continue;
+            }
+            else if(newCell->GetObject()->GetType() == ObjectType::GHOST){
+                if(newCell->GetObject()->GetItem()->GetIcon() > g){
+                    continue;
+                }
+            }
+            if(newCell->GetObject()->GetItem()!=nullptr && newCell->GetObject()->GetItem()->GetType() == ItemType::EQUALS){
+                continue;
+            }
+            CellObjBase* newGhost = new Ghost(newCell);
+            newGhost->InitItem(g); // g is char
+            this->objects[ObjectType::GHOST].push_back(newGhost);
+        }
+
         // TODO: NOTE: MAKE GHOST OBJ, after MAKE IT -> edit below
-
-
     }
 
     
@@ -354,6 +399,55 @@ void Map::SpawnGhosts()
 
         //now num will be ghost.
         // EDIT ME EDIT ME EDIT ME EDIT ME
+
+        std::vector<char> preGhost;
+        std::stack<char> GhostStack;
+        if(num<0){
+            preGhost.push_back('-');
+            num*=-1;
+        }
+        int afterCal = num;
+        while(afterCal % 10 != 0){
+            afterCal = afterCal % 10;
+            char c = afterCal + '0';
+            GhostStack.push(c);
+            if(afterCal<10){
+                break;
+            }
+        }
+        while(!GhostStack.empty()){
+            preGhost.push_back(GhostStack.top());
+            GhostStack.pop();
+        }
+
+        // Cell* GhostMaker = e->parent->parent;
+        int row = e->parent->parent->row;
+        int col = e->parent->parent->col;
+        for(auto g:preGhost){
+            // Direction::RIGHT
+            row++;
+            if(row >= this->GetRowsize()){
+                break;
+            }
+            Cell* newCell = GetCell(row, col);
+            if(newCell->GetObject()->GetType() == ObjectType::BOX || newCell->GetObject()->GetType() == ObjectType::PLAYER){
+                continue;
+            }
+            else if(newCell->GetObject()->GetType() == ObjectType::GHOST){
+                if(newCell->GetObject()->GetItem()->GetIcon() > g){
+                    continue;
+                }
+                else{
+                    delete newCell->GetObject();
+                }
+            }
+            if(newCell->GetObject()->GetItem()!=nullptr && newCell->GetObject()->GetItem()->GetType() == ItemType::EQUALS){
+                continue;
+            }
+            CellObjBase* newGhost = new Ghost(newCell);
+            newGhost->InitItem(g); // g is char
+            this->objects[ObjectType::GHOST].push_back(newGhost);
+        }
     }
 
     //////////   TODO END   ////////////////////////////////////
@@ -366,7 +460,11 @@ void Map::RemoveGhosts()
     //////////     TODO     ////////////////////////////////////
     // Remove every ghosts and clear this->objects[GHOST].
 
-
+    for(auto o:this->objects[ObjectType::GHOST]){
+        delete o;
+        o = nullptr;
+    }
+    this->objects[ObjectType::GHOST].clear();
 
     //////////   TODO END   ////////////////////////////////////    
 }
