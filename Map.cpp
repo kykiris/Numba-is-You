@@ -126,7 +126,7 @@ bool Map::IsCleared() const
 
     bool isTrue = true;
     for(auto h:homes){
-        if(h->Check() == HomeCheckResult::WRONG){
+        if(h->Check() == HomeCheckResult::WRONG || h->Check() == HomeCheckResult::EMPTY){
             isTrue = false;
         }
     }

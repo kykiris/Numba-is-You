@@ -9,6 +9,9 @@
 class Game
 {
 private:
+
+    // std::stack<std::vector<std::string>> undoStack;
+    std::stack<std::vector<std::vector<int>>> undoStack;
     Map* map = nullptr;
 
     std::string levelName;

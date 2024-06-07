@@ -32,5 +32,7 @@ public:
     virtual AttrType GetAttr() const = 0;
     virtual char GetIcon() const = 0;
 
+    virtual bool TryPush(Direction dir) = 0;
+
     //////////   TODO END   ////////////////////////////////////
 };

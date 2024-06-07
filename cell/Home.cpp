@@ -12,9 +12,17 @@ Home::Home(Map* map, int row, int col) : Cell(map, row, col)
 }
 
 HomeCheckResult Home::Check(){
-    if(obj->GetItem()->GetType()==ItemType::NUMBER){
-        int num_value = obj->GetItem()->GetIcon() - '0';
-        if(this->target_number == num_value){
+    // if(obj->GetItem()->GetType()==ItemType::NUMBER){
+    //     int num_value = obj->GetItem()->GetIcon() - '0';
+    //     if(this->target_number == num_value){
+    //         return HomeCheckResult::CORRECT;
+    //     }
+    //     else{
+    //         return HomeCheckResult::WRONG;
+    //     }
+    // }
+    if(obj!=nullptr){
+        if(obj->GetItem()->GetIcon() == this->GetIcon()){
             return HomeCheckResult::CORRECT;
         }
         else{

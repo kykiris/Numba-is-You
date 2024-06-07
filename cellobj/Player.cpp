@@ -16,12 +16,31 @@ bool Player::TryPush(Direction dir)
     // 3. If the neighbor is not Wall, then get its object.
     // 4. If the neighbor had an object, then try to move that object in that direction and return the result.
     // 5. If any one of 2 to 4 is false, then return false.
-
-
-
-
-
-
+    bool PushAvailable = false;
+    if(parent->GetNeighbor(dir)==nullptr){
+        PushAvailable = false;
+        return PushAvailable;
+    }
+    if(parent->GetNeighbor(dir)->cellType == CellType::WALL){
+        PushAvailable = false;
+        return PushAvailable;
+    }
+    // if(parent->GetNeighbor(dir)->GetObject()->GetType() == ObjectType::GHOST){
+    //     PushAvailable = false;
+    //     return PushAvailable;
+    // }
+    if(parent->GetNeighbor(dir)->GetObject()!=nullptr){
+        if(parent->GetNeighbor(dir)->GetObject()->TryMove(dir)){
+            return TryMove(dir);
+        }
+        else if(parent->GetNeighbor(dir)->GetObject()->TryPush(dir)){
+            return TryMove(dir);
+        }
+        else{
+            return false;
+        }
+    }
+    return PushAvailable;
     //////////   TODO END   ////////////////////////////////////
 }
 
