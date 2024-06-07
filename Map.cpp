@@ -1,5 +1,6 @@
 #include "Map.hpp"
 
+
 #include <istream>
 #include "utils/Terminal.hpp"
 
@@ -52,7 +53,13 @@ void Map::Initialize(int rowsize, int colsize, std::istream& ist)
         for(char c:line){
             if(c>='0' && c<='9'){
                 eachCell = new Home(this, i, j);
+                eachCells.push_back(eachCell);
                 homes.push_back(eachCell);
+            }
+            else if(c == '#'){
+                eachCell = new Wall(this, i, j);
+                eachCells.push_back(eachCell);
+                
             }
             else{
                 eachCell = new Cell(this, i, j);
@@ -138,37 +145,216 @@ void Map::SpawnGhosts()
     // For every equal, evaluate left/upper expression, get result string, and spawn ghosts.
 
     // selection sort : ex. (row, col) = (1,1), (1,2), (2,3), (2,5), (4,7)
-    Equal* tmp;
+    
     for(int i=0;i<equals.size()-1;i++){
-        Equal* min = this->equals[i+1];
-        for(int j=i;j<equals.size();j++){
-            if(min->parent->parent->row > equals[j]->parent->parent->row){
+        Equal* tmp;
+        int min_index = i+1;
+        for(int j=i+1;j<equals.size();j++){
+            if(equals[min_index]->parent->parent->row > equals[j]->parent->parent->row){
                 //TODO
-                min = equals[j];
+                min_index = j;
             }
-            else if(min->parent->parent->row == equals[j]->parent->parent->row){
-                if(min->parent->parent->col > equals[j]->parent->parent->col){
-                    min = equals[j];
+            else if(equals[min_index]->parent->parent->row == equals[j]->parent->parent->row){
+                if(equals[min_index]->parent->parent->col > equals[j]->parent->parent->col){
+                    min_index = j;
                 }
             }
         }
-        if(min->parent->parent->row < equals[i]->parent->parent->row){
+        if(equals[min_index]->parent->parent->row < equals[i]->parent->parent->row){
             tmp = equals[i];
-            equals[i] = min;
-            min = tmp;
+            equals[i] = equals[min_index];
+            equals[min_index] = tmp;
         }
-        else if(min->parent->parent->row == equals[i]->parent->parent->row && min->parent->parent->col < min->parent->parent->col){
+        else if(equals[min_index]->parent->parent->row == equals[i]->parent->parent->row && equals[min_index]->parent->parent->col < equals[i]->parent->parent->col){
             tmp = equals[i];
-            equals[i] = min;
-            min = tmp;
+            equals[i] = equals[min_index];
+            equals[min_index] = tmp;
         }
-        min = nullptr;
+        tmp = nullptr;
     }
-    tmp = nullptr;
+    
     //sort end
+
+
+    // Note: Ghost Making Algorithm
+    for(auto e:equals){
+        std::string s = e->GetExpression(Direction::LEFT);
+        int i=0;
+        std::vector<std::string> ExpToVec; // each item is here
+        std::vector<char> eachNum; // to make n digit num
+        for(auto c:s){
+            // if(c=='*' || c=='+' || c=='-'){
+                
+            // }
+            if(c>='0' && c<='9'){
+                eachNum.push_back(c);
+            }
+            else{
+                // push back eachNum to ExpToVec
+                if(!eachNum.empty()){
+                    std::string x;
+                    for(auto y:eachNum){
+                        x = x+y;
+                    }
+                    eachNum.clear();
+                    ExpToVec.push_back(x);
+                }
+                std::string z;
+                z = z + c;
+                ExpToVec.push_back(z);
+            }
+        }
+        if(!eachNum.empty()){
+            std::string x;
+            for(auto y:eachNum){
+                x = x+y;
+            }
+            eachNum.clear();
+            ExpToVec.push_back(x);
+        }
+
+
+        // let's calculate...
+        std::string op = "+";
+        int num = 0;
+        for(auto st:ExpToVec){
+            if(st=="+" || st=="-" || st=="*"){
+                op = st;
+            }
+            else if(st[0]>='0' && st[0]<='9'){
+                int n = 0;
+                for(int i=0;i<st.length();i++){
+                    int dig = st[i] - '0';
+                    for(int j=0;j<st.length()-1-i;j++){
+                        dig *= 10;
+                    }
+                    n += dig;
+                }
+                if(op=="+"){
+                    num += n;
+                }
+                else if(op=="-"){
+                    num -= n;
+                }
+                else if(op== "*"){
+                    num *= n;
+                }
+            }
+        }
+
+        //now num will be ghost.
+
+        // TODO: NOTE: MAKE GHOST OBJ, after MAKE IT -> edit below
+
+
+    }
 
     
 
+
+
+
+
+
+
+    // selection sort again (by column)
+
+    for(int i=0;i<equals.size()-1;i++){
+        Equal* tmp;
+        int min_index = i+1;
+        for(int j=i+1;j<equals.size();j++){
+            if(equals[min_index]->parent->parent->col > equals[j]->parent->parent->col){
+                //TODO
+                min_index = j;
+            }
+            else if(equals[min_index]->parent->parent->col == equals[j]->parent->parent->col){
+                if(equals[min_index]->parent->parent->row > equals[j]->parent->parent->row){
+                    min_index = j;
+                }
+            }
+        }
+        if(equals[min_index]->parent->parent->col < equals[i]->parent->parent->col){
+            tmp = equals[i];
+            equals[i] = equals[min_index];
+            equals[min_index] = tmp;
+        }
+        else if(equals[min_index]->parent->parent->col == equals[i]->parent->parent->col && equals[min_index]->parent->parent->row < equals[i]->parent->parent->row){
+            tmp = equals[i];
+            equals[i] = equals[min_index];
+            equals[min_index] = tmp;
+        }
+        tmp = nullptr;
+    }
+
+    // Note: Ghost Making Algorithm
+    for(auto e:equals){
+        std::string s = e->GetExpression(Direction::UP);
+        int i=0;
+        std::vector<std::string> ExpToVec; // each item is here
+        std::vector<char> eachNum; // to make n digit num
+        for(auto c:s){
+            // if(c=='*' || c=='+' || c=='-'){
+                
+            // }
+            if(c>='0' && c<='9'){
+                eachNum.push_back(c);
+            }
+            else{
+                // push back eachNum to ExpToVec
+                if(!eachNum.empty()){
+                    std::string x;
+                    for(auto y:eachNum){
+                        x = x+y;
+                    }
+                    eachNum.clear();
+                    ExpToVec.push_back(x);
+                }
+                std::string z;
+                z = z + c;
+                ExpToVec.push_back(z);
+            }
+        }
+        if(!eachNum.empty()){
+            std::string x;
+            for(auto y:eachNum){
+                x = x+y;
+            }
+            eachNum.clear();
+            ExpToVec.push_back(x);
+        }
+
+
+        // let's calculate...
+        std::string op = "+";
+        int num = 0;
+        for(auto st:ExpToVec){
+            if(st=="+" || st=="-" || st=="*"){
+                op = st;
+            }
+            else if(st[0]>='0' && st[0]<='9'){
+                int n = 0;
+                for(int i=0;i<st.length();i++){
+                    int dig = st[i] - '0';
+                    for(int j=0;j<st.length()-1-i;j++){
+                        dig *= 10;
+                    }
+                    n += dig;
+                }
+                if(op=="+"){
+                    num += n;
+                }
+                else if(op=="-"){
+                    num -= n;
+                }
+                else if(op== "*"){
+                    num *= n;
+                }
+            }
+        }
+
+        //now num will be ghost.
+        // EDIT ME EDIT ME EDIT ME EDIT ME
+    }
 
     //////////   TODO END   ////////////////////////////////////
 }

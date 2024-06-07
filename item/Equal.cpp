@@ -4,7 +4,7 @@
 #include "item/Equal.hpp"
 #include "Enums.hpp"
 #include "Map.hpp"
-#include <stack>
+
 
 Equal::Equal(CellObjBase *obj): ItemBase(obj) {
     
