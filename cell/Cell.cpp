@@ -1,3 +1,4 @@
+#pragma once
 #include "cell/Cell.hpp"
 
 #include <string>

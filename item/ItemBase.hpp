@@ -2,6 +2,8 @@
 #include <string>
 
 #include "Enums.hpp"
+#include "cell/Cell.hpp"
+
 class CellObjBase;
 
 class ItemBase

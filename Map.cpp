@@ -137,12 +137,37 @@ void Map::SpawnGhosts()
     // Sort this->equals to match spawning order.
     // For every equal, evaluate left/upper expression, get result string, and spawn ghosts.
 
-    ItemBase* tmp = this->equals[0];
-    for(int i=1;i<equals.size();i++){
-        if(tmp->parent->parent->row > equals[i]->parent->parent->row){
-            //TODO
+    // selection sort : ex. (row, col) = (1,1), (1,2), (2,3), (2,5), (4,7)
+    Equal* tmp;
+    for(int i=0;i<equals.size()-1;i++){
+        Equal* min = this->equals[i+1];
+        for(int j=i;j<equals.size();j++){
+            if(min->parent->parent->row > equals[j]->parent->parent->row){
+                //TODO
+                min = equals[j];
+            }
+            else if(min->parent->parent->row == equals[j]->parent->parent->row){
+                if(min->parent->parent->col > equals[j]->parent->parent->col){
+                    min = equals[j];
+                }
+            }
         }
+        if(min->parent->parent->row < equals[i]->parent->parent->row){
+            tmp = equals[i];
+            equals[i] = min;
+            min = tmp;
+        }
+        else if(min->parent->parent->row == equals[i]->parent->parent->row && min->parent->parent->col < min->parent->parent->col){
+            tmp = equals[i];
+            equals[i] = min;
+            min = tmp;
+        }
+        min = nullptr;
     }
+    tmp = nullptr;
+    //sort end
+
+    
 
 
     //////////   TODO END   ////////////////////////////////////
