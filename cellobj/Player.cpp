@@ -2,6 +2,8 @@
 
 #include "Map.hpp"
 #include "cell/Cell.hpp"
+#include "item/ItemBase.hpp"
+#include "cellobj/CellObjBase.hpp"
 
 Player::Player(Cell* cell) : CellObjBase(cell)
 {

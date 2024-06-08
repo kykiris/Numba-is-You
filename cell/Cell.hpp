@@ -4,8 +4,9 @@
 
 #include "Enums.hpp"
 #include "cellobj/CellObjBase.hpp"
+#include "utils/Terminal.hpp"
 class Map;
-
+class CellObjBase;
 class Cell
 {
 protected:

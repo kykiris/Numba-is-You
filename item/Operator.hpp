@@ -3,6 +3,7 @@
 
 #include "item/ItemBase.hpp"
 
+class CellObjBase;
 class Operator : public ItemBase
 {
 private:

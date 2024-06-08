@@ -6,6 +6,7 @@
 #include "item/Number.hpp"
 #include "item/Operator.hpp"
 #include "item/Equal.hpp"
+#include "item/ItemBase.hpp"
 
 #define DO_NOTHING
 
@@ -42,7 +43,8 @@ bool CellObjBase::TryMove(Direction dir)
         //check its cell type
         if(parent->cellType!=CellType::WALL){
             //check its object
-            if(parent->GetObject()==nullptr){
+            // parent->GetNeighbor(dir)->GetObject()
+            if(parent->GetNeighbor(dir)->GetObject()==nullptr){
                 parent->SwapObject(parent->GetNeighbor(dir));
                 return true;
             }

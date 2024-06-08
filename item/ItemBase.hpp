@@ -3,6 +3,7 @@
 
 #include "Enums.hpp"
 #include "cell/Cell.hpp"
+#include "cellobj/CellObjBase.hpp"
 
 class CellObjBase;
 

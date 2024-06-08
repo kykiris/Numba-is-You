@@ -1,12 +1,17 @@
-#pragma once
+#ifndef CELLOBJBASE_H_
+#define CELLOBJBASE_H_
 #include <string>
 #include <memory>
 
 #include "Enums.hpp"
+#include "cell/Cell.hpp"
 #include "item/ItemBase.hpp"
+// #include "item/Number.hpp"
+// #include "item/Equal.hpp"
+// #include "item/Operator.hpp"
 #include "utils/Terminal.hpp"
 class Cell;
-
+class ItemBase;
 class CellObjBase
 {
 protected:
@@ -36,3 +41,5 @@ public:
 
     //////////   TODO END   ////////////////////////////////////
 };
+
+#endif

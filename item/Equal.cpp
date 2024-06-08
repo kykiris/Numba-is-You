@@ -1,6 +1,5 @@
 //////////     TODO     ////////////////////////////////////
 // Implement the methods of your Equal class
-#pragma once
 #include "item/Equal.hpp"
 #include "Enums.hpp"
 #include "Map.hpp"
@@ -10,6 +9,7 @@ Equal::Equal(CellObjBase *obj): ItemBase(obj) {
     
 }
 
+bool inRange(int row, int col, Map* m);
 
 Cell* NeighborCell(Direction dir, Cell* c){
     int row = c->row;

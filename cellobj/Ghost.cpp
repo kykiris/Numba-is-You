@@ -1,4 +1,7 @@
 #include "cellobj/Ghost.hpp"
+#include "item/ItemBase.hpp"
+#include "cell/Cell.hpp"
+#include "cellobj/CellObjBase.hpp"
 
 Ghost::Ghost(Cell* cell) : CellObjBase(cell)
 {

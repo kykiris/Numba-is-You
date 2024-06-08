@@ -3,7 +3,10 @@
 #pragma once
 #include "item/ItemBase.hpp"
 
-class Equal: public ItemBase{
+// class ItemBase;
+class CellObjBase;
+class Equal: public ItemBase
+{
     public:
     Equal(CellObjBase * obj);
     ~Equal() = default;

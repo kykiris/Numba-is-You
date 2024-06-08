@@ -2,7 +2,9 @@
 #include <string>
 
 #include "item/ItemBase.hpp"
+#include "cellobj/CellObjBase.hpp"
 
+class CellObjBase;
 class Number : public ItemBase
 {
 private:

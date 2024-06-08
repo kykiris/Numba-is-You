@@ -1,4 +1,7 @@
 #include "cellobj/Box.hpp"
+#include "item/ItemBase.hpp"
+#include "cellobj/CellObjBase.hpp"
+#include "cell/Cell.hpp"
 
 Box::Box(Cell* cell) : CellObjBase(cell)
 {

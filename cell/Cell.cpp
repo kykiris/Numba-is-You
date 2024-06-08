@@ -1,4 +1,3 @@
-#pragma once
 #include "cell/Cell.hpp"
 
 #include <string>
@@ -7,6 +6,7 @@
 #include "Map.hpp"
 #include "cellobj/Box.hpp"
 #include "cellobj/Player.hpp"
+#include "cellobj/CellObjBase.hpp"
 
 Cell::Cell(Map* map, int row, int col) : parent(map), row(row), col(col)
 {
@@ -138,8 +138,8 @@ Cell* Cell::GetNeighbor(Direction dir) const
     // If the cell is placed at the border of the map and the direction is outside the map, return nullptr.
     // Else return the neighbor cell.
 
-    int dir_row = row;
-    int dir_col = col;
+    int dir_row = this->row;
+    int dir_col = this->col;
     if(dir==Direction::UP){
         dir_row--;
     }
@@ -162,12 +162,19 @@ Cell* Cell::GetNeighbor(Direction dir) const
     // if(dir_col < 0 || dir_col > parent->GetColsize()){
     // }
 
-    if(parent->GetCell(dir_row, dir_col)->cellType==CellType::WALL){
+    if(dir_col >= parent->GetColsize() || dir_col < 0 || dir_row < 0 || dir_row >= parent->GetRowsize()){
+        return nullptr;   
+    }
+    if(parent->GetCell(dir_row, dir_col) == nullptr){
         return nullptr;
     }
+    // if(parent->GetCell(dir_row, dir_col)->cellType==CellType::WALL){
+    //     return nullptr;
+    // }
+    
 
     // Else return the neighbor cell.
-
+    
     //TODO
     else{
         return parent->GetCell(dir_row, dir_col);

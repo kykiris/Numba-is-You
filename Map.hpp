@@ -6,6 +6,7 @@
 #include "cell/Cell.hpp"
 #include "cellobj/Ghost.hpp"
 #include "item/Equal.hpp"
+#include "Enums.hpp"
 class Game;
 
 class Map
