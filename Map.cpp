@@ -45,30 +45,31 @@ void Map::Initialize(int rowsize, int colsize, std::istream& ist)
     // 1. Read cell map and construct each cell.
     // 2. Initialize each object and its item.
 
+    // std::vector<Cell*> eachCells;
     for(int i=0;i<rowsize;i++){
-        std::getline(ist, line);
+        std::getline(ist, line, '\n');
         int j=0;
-        std::vector<Cell*> eachCells;
+        // eachCells.clear();
         Cell* eachCell = 0;
         for(char c:line){
             if(c>='0' && c<='9'){
                 eachCell = new Home(this, i, j);
-                eachCells.push_back(eachCell);
+                cells[i].push_back(eachCell);
                 homes.push_back(eachCell);
             }
             else if(c == '#'){
                 eachCell = new Wall(this, i, j);
-                eachCells.push_back(eachCell);
-                
+                cells[i].push_back(eachCell);
             }
             else{
                 eachCell = new Cell(this, i, j);
-                eachCells.push_back(eachCell);
+                // eachCells.push_back(eachCell);
+                cells[i].push_back(eachCell);
             }
             
             j++;
         }
-        cells.push_back(eachCells);
+        // this->cells.push_back(eachCells);
     }
 
     // the code below needs #include <sstream>
@@ -83,15 +84,57 @@ void Map::Initialize(int rowsize, int colsize, std::istream& ist)
 
     std::string obj_type;
     char objItem;
-    int objRow, objCol;
+    
     for(int i=0;i<num_obj;i++){
-        ist>>obj_type>>objItem>>objRow>>objCol;
-        ist.ignore();
+        // std::getline(ist, line);
+        // if(line[0]=='B'){
+        //     obj_type = "Box";
+        //     line = line.substr(4);
+        // }
+        // else if(line[0]=='P'){
+        //     obj_type = "Player";
+        //     line = line.substr(7);
+        // }
+        // for(int i=0;i<3;i++){
+        //     int j=0;
+        //     while(line[j]==' '){
+
+        //     }
+        // }
+
+        std::getline(ist, obj_type, ' ');
+        std::string inputs;
+        std::getline(ist, inputs, ' ');
+        objItem = inputs[0];
+        std::getline(ist, inputs, ' ');
+        // throw std::runtime_error(inputs);
+        int objRow = 0;
+        int objCol = 0;
+        for(int j=0;j<inputs.length();j++){
+            int dig = inputs[j] - '0';
+            for(int k=0;k<inputs.length()-1-j;k++){
+                dig *= 10;
+            }
+            objRow += dig;
+        }
+        std::getline(ist, inputs, '\n');
+        for(int j=0;j<inputs.length();j++){
+            int dig = inputs[j] - '0';
+            for(int k=0;k<inputs.length()-1-j;k++){
+                dig *= 10;
+            }
+            objCol += dig;
+        }
+
+        // ist>>obj_type>>objItem>>objRow>>objCol;
+        // ist.ignore();
+        
+        //Cell* nC = GetCell(objRow, objCol);
         GetCell(objRow, objCol)->InitObject(obj_type);
+        // throw std::runtime_error("This is where you stand"); // Error Check
         GetCell(objRow, objCol)->GetObject()->InitItem(objItem);
+        //
     }
-
-
 
 
     //////////   TODO END   ////////////////////////////////////

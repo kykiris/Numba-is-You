@@ -134,12 +134,14 @@ void Game::Load(std::string filename)
     ifs.ignore();  // ignore next '\n' for getline
 
     this->map->Initialize(rowsize, colsize, ifs);
-
+    
     // make ghosts
     this->map->SpawnGhosts();
     if (this->map->IsCleared())
         this->gameState = GameState::CLEARED;
     this->map->PrintAll();
+
+    
 
     //////////     TODO     ////////////////////////////////////
     // Add undo-related logic if you needed.

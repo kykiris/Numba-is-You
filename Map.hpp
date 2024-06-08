@@ -25,7 +25,7 @@ public:
     ~Map();
     void Initialize(int rowsize, int colsize, std::istream& ist);
 
-    Cell* GetCell(int row, int col) const { return cells[row][col]; }
+    Cell* GetCell(int row, int col) { return cells[row][col]; }
     int GetRowsize() const { return cells.size(); }
     int GetColsize() const { return cells[0].size(); }
     bool IsInitialized() const { return initialized; }

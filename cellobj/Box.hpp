@@ -1,7 +1,6 @@
 #pragma once
 #include "cellobj/CellObjBase.hpp"
 
-
 class Box : public CellObjBase
 {
 public:
