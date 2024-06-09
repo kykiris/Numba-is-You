@@ -221,13 +221,12 @@ void Game::AskExit()
 
     
     while(1){
-        char c;
-        std::cin>>c;
-        if(c=='Q' || c=='q'){
+        Command Key = Terminal::GetCommand();
+        if(Key == Command::EXIT){
             gameState = GameState::GAMEOVER;
             break;
         }
-        else if(c=='Z' || c=='z'){
+        else if(Key == Command::UNDO){
             Terminal::ClearMessage();
             break;
         }
