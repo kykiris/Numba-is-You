@@ -28,8 +28,8 @@ public:
 
     Cell* GetNeighbor(Direction dir) const;
 
-    AttrType GetAttr() const;
-    ColorPair GetColorPair() const;
+    virtual AttrType GetAttr() const;
+    virtual ColorPair GetColorPair() const;
     virtual char GetIcon() const;
     virtual HomeCheckResult Check(){ return HomeCheckResult::EMPTY;};
 };

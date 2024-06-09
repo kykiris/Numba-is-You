@@ -8,10 +8,8 @@ Ghost::Ghost(Cell* cell) : CellObjBase(cell)
 }
 
 Ghost::~Ghost(){
-    delete parent;
-    parent = nullptr;
-    delete item;
-    item = nullptr;
+    // delete item;
+    // item = nullptr;
 }
 
 //////////     TODO     ////////////////////////////////////

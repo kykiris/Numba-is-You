@@ -1,5 +1,5 @@
 #include "cellobj/CellObjBase.hpp"
-
+#include <iostream>
 #include "Enums.hpp"
 #include "Map.hpp"
 #include "cell/Cell.hpp"
@@ -19,10 +19,9 @@ CellObjBase::~CellObjBase()
     //////////     TODO     ////////////////////////////////////
     // Modify destructor if you needed.
 
-    delete item;
-    delete parent;
-    item = nullptr;
-    parent = nullptr;
+    // delete item;
+    // item = nullptr;
+    // parent = nullptr;
 
     //////////   TODO END   ////////////////////////////////////
 }

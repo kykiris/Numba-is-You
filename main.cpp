@@ -4,7 +4,7 @@
 
 int main(int argc, char* argv[])
 {
-    std::string level_name = (argc > 1) ? argv[1] : "levels/2-equation.txt";
+    std::string level_name = (argc > 1) ? argv[1] : "levels/3-multi-digit.txt";
     Game game{ level_name };
     game.Run();
 }

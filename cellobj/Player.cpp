@@ -8,7 +8,9 @@
 Player::Player(Cell* cell) : CellObjBase(cell)
 {
 }
-
+Player::~Player(){
+    
+}
 bool Player::TryPush(Direction dir)
 {
     //////////     TODO     ////////////////////////////////////

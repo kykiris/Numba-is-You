@@ -333,15 +333,9 @@ void Map::SpawnGhosts()
             if(newCell!=nullptr && newCell->GetIcon()=='='){
                 break;
             }
-            // CellObjBase* newGhost = new Ghost(newCell);
-            // newGhost->InitItem(g); // g is char
-            // newGhost->parent = newCell;
-            // newGhost->parent->
+            
             newCell->InitObject("Ghost");
             newCell->GetObject()->InitItem(g);
-            // if(newGhost->parent->GetIcon()!=g) delete newGhost;
-            // this->objects[ObjectType::GHOST].push_back(newCell->GetObject());
-            // this->objects[ObjectType::GHOST][]
         }
 
         // TODO: NOTE: MAKE GHOST OBJ, after MAKE IT -> edit below
@@ -350,8 +344,14 @@ void Map::SpawnGhosts()
     
 
 
+// CellObjBase* newGhost = new Ghost(newCell);
+            // newGhost->InitItem(g); // g is char
+            // newGhost->parent = newCell;
+            // newGhost->parent->
 
-
+            // if(newGhost->parent->GetIcon()!=g) delete newGhost;
+            // this->objects[ObjectType::GHOST].push_back(newCell->GetObject());
+            // this->objects[ObjectType::GHOST][]
 
 
 
@@ -483,23 +483,21 @@ void Map::SpawnGhosts()
                 break;
             }
             Cell* newCell = GetCell(row, col);
-            if(newCell->GetObject()->GetItem()!=nullptr && newCell->GetObject()->GetType() == ObjectType::BOX || newCell->GetObject()->GetType() == ObjectType::PLAYER){
+            if(newCell->GetObject()!=nullptr && (newCell->GetObject()->GetType() == ObjectType::BOX || newCell->GetObject()->GetType() == ObjectType::PLAYER)){
                 continue;
             }
-            else if(newCell->GetObject()->GetType() == ObjectType::GHOST){
-                if(newCell->GetObject()->GetItem()->GetIcon() > g){
+            else if(newCell->GetObject()!=nullptr && newCell->GetObject()->GetType() == ObjectType::GHOST){
+                //if(newCell->GetObject()->GetItem()!=nullptr && newCell->GetObject()->GetItem()->GetIcon() > g){
+                if(newCell->GetIcon()!=' ' && newCell->GetIcon() >= g){
                     continue;
                 }
-                else{
-                    delete newCell->GetObject();
-                }
             }
-            if(newCell->GetObject()->GetItem()!=nullptr && newCell->GetObject()->GetItem()->GetType() == ItemType::EQUALS){
-                continue;
+            if(newCell!=nullptr && newCell->GetIcon()=='='){
+                break;
             }
-            CellObjBase* newGhost = new Ghost(newCell);
-            newGhost->InitItem(g); // g is char
-            this->objects[ObjectType::GHOST].push_back(newGhost);
+            
+            newCell->InitObject("Ghost");
+            newCell->GetObject()->InitItem(g);
         }
     }
 
@@ -514,10 +512,11 @@ void Map::RemoveGhosts()
     // Remove every ghosts and clear this->objects[GHOST].
 
     for(auto o:this->objects[ObjectType::GHOST]){
-        o->parent = nullptr;
         // o->GetItem();
-        delete o;
+        o->parent->InitObject(" ");
+        // delete o;
         o = nullptr;
+        // delete o->GetItem();
     }
     this->objects[ObjectType::GHOST].clear();
 

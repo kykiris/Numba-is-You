@@ -10,9 +10,10 @@ Equal::Equal(CellObjBase *obj): ItemBase(obj) {
 }
 Equal::~Equal(){
     // delete parent->parent;
-    delete parent;
+    // delete parent;
     // parent->parent = nullptr;
-    parent = nullptr;
+    // parent = nullptr;
+    delete parent->GetItem();
 }
 
 bool inRange(int row, int col, Map* m);
@@ -96,6 +97,7 @@ std::string Equal::GetExpression(Direction dir){
             if(s.top()=='-'){
                 exp = exp + s.top();
             }
+            i++;
             s.pop();
         }
         else if(i==0 && s.top()=='*'){
@@ -104,11 +106,13 @@ std::string Equal::GetExpression(Direction dir){
         }
         else if(s.top()<='9' && s.top()>='0'){
             numtmp = numtmp + s.top();
+            i++;
             s.pop();
         }
         else if(s.top() == '+' || s.top()=='-' || s.top() == '*'){
             if(numtmp.length()!=0){
                 exp = exp+numtmp+s.top();
+                i++;
                 s.pop();
                 numtmp = "";
             }
@@ -166,6 +170,10 @@ std::string Equal::GetExpression(Direction dir){
                 availExp = false;
             }
             
+        }
+        if(exp.empty() && !(numtmp.empty())){
+            exp = exp + numtmp;
+            numtmp = "";
         }
     }
 

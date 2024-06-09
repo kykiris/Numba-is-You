@@ -46,6 +46,9 @@ void Cell::InitObject(const std::string& objType)
         obj = new Ghost(this);
         parent->objects[ObjectType::GHOST].push_back(obj);
     }
+    else{
+        obj = nullptr;
+    }
     //////////   TODO END   ////////////////////////////////////
 }
 
@@ -82,22 +85,19 @@ AttrType Cell::GetAttr() const
     // Default attr is NORMAL, but if this cell has an object, then OR(|) with the object's attr.
 
     AttrType at = Terminal::Attr::NORMAL;
-    if(cellType == CellType::CELL){
-        //Terminal::Attr::NORMAL = ;
-        at = Terminal::Attr::NORMAL;
-    }
-    else if(cellType == CellType::HOME){
+    // if(cellType == CellType::CELL){
+    //     //Terminal::Attr::NORMAL = ;
+    //     at = Terminal::Attr::NORMAL;
+    // }
+    // else if(cellType == CellType::HOME){
 
-        if(obj==nullptr){
-            at = Terminal::Attr::UNDERLINE | Terminal::Attr::DIM;
-        }
-        else{
-            at = Terminal::Attr::UNDERLINE;
-        }
-    }
-    else if(cellType == CellType::WALL){
-        at = Terminal::Attr::REVERSE;
-    }
+    //     if(obj==nullptr){
+    //         at = Terminal::Attr::UNDERLINE | Terminal::Attr::DIM;
+    //     }
+    //     else{
+    //         at = Terminal::Attr::UNDERLINE;
+    //     }
+    // }
 
     if(obj != nullptr){
         if(obj->GetType() == ObjectType::GHOST){
@@ -120,44 +120,26 @@ ColorPair Cell::GetColorPair() const
     // Default ColorPair is NORMAL, but if this->object is a player, then return PLAYER_NORMAL.
     ColorPair cp = ColorPair::NORMAL;
 
-    if(this->cellType == CellType::HOME){
-        if(obj!=nullptr){
-            if(obj->GetType() == ObjectType::PLAYER){
-                if(obj->GetIcon()==this->GetIcon()){
-                    cp = ColorPair::PLAYER_CORRECT;
-                }
-                else{
-                    cp = ColorPair::PLAYER_WRONG;
-                }
-            }
-            else{
-                if(obj->GetIcon()==this->GetIcon()){
-                    cp = ColorPair::CORRECT;
-                }
-                else{
-                    cp = ColorPair::WRONG;
-                }
-            }
-            
-        }
-        else{
-            cp = ColorPair::NORMAL;
-        }
-    }
-    else{
-        if(obj==nullptr){
-            cp = ColorPair::NORMAL;
-        }
-        else{
-            if(obj->GetType()==ObjectType::PLAYER){
-                cp = ColorPair::PLAYER_NORMAL;
-            }
-        }
-    }
+    
+    // else{
+    //     if(obj==nullptr){
+    //         cp = ColorPair::NORMAL;
+    //     }
+    //     else if(obj!=nullptr){
+    //         if(obj->GetType()==ObjectType::PLAYER){
+    //             cp = ColorPair::PLAYER_NORMAL;
+    //         }
+    //     }
+    // }
 
+    if(obj!=nullptr){
+        if(obj->GetType()==ObjectType::PLAYER){
+            cp = ColorPair::PLAYER_NORMAL;
+        }
+    }
     return cp;
 
-    //////////   TODO END   ////////////////////////////////////
+    //////////   TO DO END   ////////////////////////////////////
 }
 
 char Cell::GetIcon() const

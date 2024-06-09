@@ -40,7 +40,7 @@ HomeCheckResult Home::Check(){
     //     }
     // }
     if(obj!=nullptr){
-        if(obj->GetItem()!=nullptr && obj->GetItem()->GetIcon() == this->GetIcon()){
+        if(obj->GetItem()!=nullptr && obj->GetItem()->GetIcon() == targetNumber){
             return HomeCheckResult::CORRECT;
         }
         else{
@@ -55,10 +55,48 @@ HomeCheckResult Home::Check(){
 //TODO      
 }
 
-
+ColorPair Home::GetColorPair() const{
+    ColorPair cp = ColorPair::NORMAL;
+    if(obj!=nullptr){
+        if(obj->GetType() == ObjectType::PLAYER){
+            if(obj->GetIcon()==targetNumber){
+                cp = ColorPair::PLAYER_CORRECT;
+            }
+            else{
+                cp = ColorPair::PLAYER_WRONG;
+            }
+        }
+        else{
+            if(obj->GetIcon()==targetNumber){
+                cp = ColorPair::CORRECT;
+            }
+            else{
+                cp = ColorPair::WRONG;
+            }
+        }
+    }
+    return cp;
+}
 
 //TODO
-// AttrType Home::GetAttr() const{}
+AttrType Home::GetAttr() const{
+    AttrType at = Terminal::Attr::NORMAL;
+    if(obj==nullptr){
+        at = Terminal::Attr::UNDERLINE | Terminal::Attr::DIM;
+    }
+    else{
+        at = Terminal::Attr::UNDERLINE;
+    }
+    if(obj != nullptr){
+        if(obj->GetType() == ObjectType::GHOST){
+            at = at | Terminal::Attr::DIM;
+        }
+        else{
+            at = at | Terminal::Attr::NORMAL;
+        }
+    }
+    return at;
+}
 // ColorPair Home::GetColorPair() const{}
 // char Home::GetIcon() const{}
 

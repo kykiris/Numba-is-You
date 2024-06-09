@@ -5,8 +5,6 @@ Operator::Operator(CellObjBase* obj, OpType op) : ItemBase(obj), op(op)
 }
 
 Operator::~Operator(){
-    delete parent;
-    parent = nullptr;
 }
 //////////     TODO     ////////////////////////////////////
 // Define overrided functions from Number.hpp.

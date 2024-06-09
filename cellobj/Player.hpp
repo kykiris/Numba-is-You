@@ -6,7 +6,7 @@ class Player : public CellObjBase
 {
 public:
     Player(Cell* cell);
-
+    ~Player();
     bool TryPush(Direction dir);
 
     //////////     TODO     ////////////////////////////////////

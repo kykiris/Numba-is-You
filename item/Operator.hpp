@@ -1,5 +1,4 @@
 #pragma once
-#include <iostream>
 
 #include "item/ItemBase.hpp"
 
@@ -11,7 +10,7 @@ private:
 
 public:
     Operator(CellObjBase* obj, OpType op);
-
+    ~Operator();
     //////////     TODO     ////////////////////////////////////
     // Override virtual functions from ItemBase.
     // You don't have to override them if you want to keep using the ItemBase functions.
