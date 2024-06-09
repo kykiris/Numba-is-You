@@ -24,7 +24,7 @@ public:
     virtual ~CellObjBase();
 
     void InitItem(char itemIcon);
-    ItemBase* GetItem() const { return this->item; }
+    ItemBase* GetItem() const { return this->item; };
 
     bool TryMove(Direction dir);
 
@@ -34,7 +34,7 @@ public:
     // in this virtual class, and change them into non-pure virtual functions.
 
     virtual ObjectType GetType() const = 0;
-    virtual AttrType GetAttr() const = 0;
+    // virtual AttrType GetAttr() const = 0;
     virtual char GetIcon() const = 0;
 
     virtual bool TryPush(Direction dir) = 0;

@@ -52,9 +52,9 @@ bool Player::TryPush(Direction dir)
 ObjectType Player::GetType() const{
     return ObjectType::PLAYER;
 }
-AttrType Player::GetAttr() const{
-    return Terminal::Attr::NORMAL;
-}
+// AttrType Player::GetAttr() const{
+//     return Terminal::Attr::NORMAL;
+// }
 
 char Player::GetIcon() const{
     if(GetItem()!=nullptr){

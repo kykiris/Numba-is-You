@@ -7,6 +7,13 @@ Ghost::Ghost(Cell* cell) : CellObjBase(cell)
 {
 }
 
+Ghost::~Ghost(){
+    delete parent;
+    parent = nullptr;
+    delete item;
+    item = nullptr;
+}
+
 //////////     TODO     ////////////////////////////////////
 // Define overrided functions from Ghost.hpp.
     // Implement Ghost::GetType that returns GHOST.
@@ -19,9 +26,9 @@ Ghost::Ghost(Cell* cell) : CellObjBase(cell)
 ObjectType Ghost::GetType() const{
     return ObjectType::GHOST;
 }
-AttrType Ghost::GetAttr() const{
-    return Terminal::Attr::DIM;
-}
+// AttrType Ghost::GetAttr() const{
+//     return Terminal::Attr::DIM;
+// }
 char Ghost::GetIcon() const{
     return GetItem()->GetIcon();
 }

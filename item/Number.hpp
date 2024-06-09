@@ -25,9 +25,9 @@ public:
 
 
     
-    virtual ItemType GetType() const { return ItemType::NUMBER; };
-    virtual char GetIcon() const { return value+'0'; };
-    int GetNumber() {return value;};
+    ItemType GetType() const { return ItemType::NUMBER; };
+    char GetIcon() const { return (char)(value+'0'); };
+    // int GetNumber() {return value;};
 
     //////////   TODO END   ////////////////////////////////////
 };

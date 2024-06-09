@@ -14,11 +14,11 @@ Box::~Box(){};
 ObjectType Box::GetType() const{
     return ObjectType::BOX;
 }
-AttrType Box::GetAttr() const{
-    return Terminal::Attr::NORMAL;
-}
+// AttrType Box::GetAttr() const{
+//     return Terminal::Attr::NORMAL;
+// }
 char Box::GetIcon() const{
-    return GetItem()->GetIcon();
+    return item->GetIcon();
 }
 
 bool Box::TryPush(Direction dir)

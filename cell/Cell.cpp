@@ -1,5 +1,5 @@
 #include "cell/Cell.hpp"
-
+#include "cell/Home.hpp"
 #include <string>
 #include "utils/Terminal.hpp"
 
@@ -42,6 +42,10 @@ void Cell::InitObject(const std::string& objType)
         obj = new Player(this);
         parent->objects[ObjectType::PLAYER].push_back(obj);
     }
+    else if(objType == "Ghost"){
+        obj = new Ghost(this);
+        parent->objects[ObjectType::GHOST].push_back(obj);
+    }
     //////////   TODO END   ////////////////////////////////////
 }
 
@@ -77,22 +81,34 @@ AttrType Cell::GetAttr() const
     // Implement Cell::GetAttr.
     // Default attr is NORMAL, but if this cell has an object, then OR(|) with the object's attr.
 
+    AttrType at = Terminal::Attr::NORMAL;
     if(cellType == CellType::CELL){
         //Terminal::Attr::NORMAL = ;
-        return Terminal::Attr::NORMAL;
+        at = Terminal::Attr::NORMAL;
     }
     else if(cellType == CellType::HOME){
 
-        if(GetObject()!=nullptr){
-            return Terminal::Attr::UNDERLINE | Terminal::Attr::DIM;
+        if(obj==nullptr){
+            at = Terminal::Attr::UNDERLINE | Terminal::Attr::DIM;
         }
         else{
-            return Terminal::Attr::UNDERLINE;
+            at = Terminal::Attr::UNDERLINE;
         }
     }
     else if(cellType == CellType::WALL){
-        return Terminal::Attr::REVERSE;
+        at = Terminal::Attr::REVERSE;
     }
+
+    if(obj != nullptr){
+        if(obj->GetType() == ObjectType::GHOST){
+            at = at | Terminal::Attr::DIM;
+        }
+        else{
+            at = at | Terminal::Attr::NORMAL;
+        }
+    }
+
+    return at;
 
     //////////   TODO END   ////////////////////////////////////
 }
@@ -102,14 +118,44 @@ ColorPair Cell::GetColorPair() const
     //////////     TODO     ////////////////////////////////////
     // Implement Cell::GetColorPair.
     // Default ColorPair is NORMAL, but if this->object is a player, then return PLAYER_NORMAL.
-    
-    
-    if(GetObject()->GetType()==ObjectType::PLAYER){
-        return ColorPair::PLAYER_NORMAL;
-    } 
-    else{
-        return ColorPair::NORMAL;
+    ColorPair cp = ColorPair::NORMAL;
+
+    if(this->cellType == CellType::HOME){
+        if(obj!=nullptr){
+            if(obj->GetType() == ObjectType::PLAYER){
+                if(obj->GetIcon()==this->GetIcon()){
+                    cp = ColorPair::PLAYER_CORRECT;
+                }
+                else{
+                    cp = ColorPair::PLAYER_WRONG;
+                }
+            }
+            else{
+                if(obj->GetIcon()==this->GetIcon()){
+                    cp = ColorPair::CORRECT;
+                }
+                else{
+                    cp = ColorPair::WRONG;
+                }
+            }
+            
+        }
+        else{
+            cp = ColorPair::NORMAL;
+        }
     }
+    else{
+        if(obj==nullptr){
+            cp = ColorPair::NORMAL;
+        }
+        else{
+            if(obj->GetType()==ObjectType::PLAYER){
+                cp = ColorPair::PLAYER_NORMAL;
+            }
+        }
+    }
+
+    return cp;
 
     //////////   TODO END   ////////////////////////////////////
 }
@@ -119,13 +165,13 @@ char Cell::GetIcon() const
     //////////     TODO     ////////////////////////////////////
     // Implement Cell::GetIcon.
     // Default icon is ' ', but if this cell has an object, then return the object's icon.
-
-    if(GetObject()!=nullptr){
-        //idk it is right, but anyway added... 240606 1:08
-        return GetObject()->GetIcon();
-    }
-    else{
-        return ' ';
+    if(cellType != CellType::HOME){
+        if(obj == nullptr){
+            return ' ';
+        }
+        else{
+            return obj->GetIcon();
+        }
     }
 
     //////////   TODO END   ////////////////////////////////////

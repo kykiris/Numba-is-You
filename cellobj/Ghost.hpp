@@ -5,6 +5,7 @@ class Ghost : public CellObjBase
 {
 public:
     Ghost(Cell* cell);
+    virtual ~Ghost();
 
     //////////     TODO     ////////////////////////////////////
     // Override virtual functions from CellObjBase.
@@ -18,7 +19,7 @@ public:
     // No default icon - return the item's icon.
 
     virtual ObjectType GetType() const;
-    virtual AttrType GetAttr() const;
+    // virtual AttrType GetAttr() const;
     virtual char GetIcon() const;
 
     virtual bool TryPush(Direction dir) {return false;};

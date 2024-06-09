@@ -20,7 +20,7 @@ public:
     virtual ~Box();
 
     virtual ObjectType GetType() const;
-    virtual AttrType GetAttr() const;
+    // virtual AttrType GetAttr() const;
     virtual char GetIcon() const;
 
     virtual bool TryPush(Direction dir);

@@ -6,9 +6,27 @@
 #include "cell/Home.hpp"
 
 
-Home::Home(Map* map, int row, int col) : Cell(map, row, col)
+Home::Home(Map* map, int row, int col, char c) : Cell(map, row, col)
 {
     this->cellType = CellType::HOME;
+    this->targetNumber = c;
+    // this->obj = new CellObjBase(this);
+}
+
+char Home::GetIcon() const{
+    if(obj==nullptr){
+        return targetNumber;
+    }
+    else{
+        //idk it is right, but anyway added... 240606 1:08
+        if(obj->GetItem()!=nullptr){
+            return obj->GetItem()->GetIcon();
+        }
+        else{
+            return ' ';
+        }
+        
+    }
 }
 
 HomeCheckResult Home::Check(){
@@ -22,7 +40,7 @@ HomeCheckResult Home::Check(){
     //     }
     // }
     if(obj!=nullptr){
-        if(obj->GetItem()->GetIcon() == this->GetIcon()){
+        if(obj->GetItem()!=nullptr && obj->GetItem()->GetIcon() == this->GetIcon()){
             return HomeCheckResult::CORRECT;
         }
         else{
@@ -40,9 +58,9 @@ HomeCheckResult Home::Check(){
 
 
 //TODO
-AttrType Home::GetAttr() const{}
-ColorPair Home::GetColorPair() const{}
-char Home::GetIcon() const{}
+// AttrType Home::GetAttr() const{}
+// ColorPair Home::GetColorPair() const{}
+// char Home::GetIcon() const{}
 
 
 

@@ -9,7 +9,7 @@ class Equal: public ItemBase
 {
     public:
     Equal(CellObjBase * obj);
-    ~Equal() = default;
+    ~Equal();
     std::string GetExpression(Direction dir);
 
     ItemType GetType() const { return ItemType::EQUALS; };

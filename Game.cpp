@@ -159,9 +159,10 @@ void Game::StartSolve(std::string filename)
         "  Press any key to continue...\n"
         "  Press Q to stop.\n"
     );
+    // filename = filename+".sol";
     std::ifstream ifs { filename };
     if (!ifs.is_open())
-        throw std::runtime_error("Could not open level file.");
+        throw std::runtime_error("Could not open solution file.");
     std::string line;
     std::getline(ifs, line);
 
@@ -171,31 +172,32 @@ void Game::StartSolve(std::string filename)
     // Any keystroke except ‘Q’ will simulate the given input and will progress to next move.
     // If you press ‘Q’, then the solving state ends.
     // When the solving state ends, clear the terminal message.
-
     for(auto c:line){
-        char anyKey;
-        std::cin>>anyKey;
-        if(anyKey=='Q' || anyKey=='q'){
+        Command anyKey = Terminal::GetCommand();
+        if(anyKey==Command::EXIT){
             break;
-        }
-        Command cmd;
-        if(c == 'W'){
-            cmd = Command::UP;
-        }
-        else if(c == 'A'){
-            cmd = Command::LEFT;
-        }
-        else if(c == 'S'){
-            cmd = Command::DOWN;
-        }
-        else if(c == 'D'){
-            cmd = Command::RIGHT;
         }
         else{
-            break;
+            Command cmd;
+            if(c == 'W'){
+                cmd = Command::UP;
+            }
+            else if(c == 'A'){
+                cmd = Command::LEFT;
+            }
+            else if(c == 'S'){
+                cmd = Command::DOWN;
+            }
+            else if(c == 'D'){
+                cmd = Command::RIGHT;
+            }
+            else{
+                break;
+            }
+            
+            Move((Direction)((int)cmd - (int)Command::UP));
         }
-        
-        Move((Direction)((int)cmd - (int)Command::UP));
+        // gameState = GameState::PLAYING;
     }
 
     Terminal::ClearMessage();
@@ -246,10 +248,26 @@ void Game::Move(Direction dir)
     // 5. Print the map.
     // 6. Push current map state to undo stack.
 
+    std::vector<Cell*> latestMap;
+    for(auto o:map->objects[ObjectType::BOX]){
+        Cell* location;
+        location = map->GetCell(o->parent->row, o->parent->col);
+        latestMap.push_back(location);
+    }
+    for(auto o:map->objects[ObjectType::PLAYER]){
+        Cell* location;
+        location = map->GetCell(o->parent->row, o->parent->col);
+        latestMap.push_back(location);
+    }
+    undoStack.push(latestMap);
+
     map->RemoveGhosts();
     
     int playerNum = map->objects[ObjectType::PLAYER].size();
-    std::vector<CellObjBase*> players = map->objects[ObjectType::PLAYER];
+    std::vector<CellObjBase*> players;
+    for(auto o:map->objects[ObjectType::PLAYER]){
+        players.push_back(o);
+    }
     //sort players
     for(int i=0;i<playerNum-1;i++){
         CellObjBase* stdPly = players[i];
@@ -289,6 +307,9 @@ void Game::Move(Direction dir)
     //sort end
 
     for(auto v:players){
+        if(v==nullptr){
+            break;
+        }
         if(v->TryPush(dir)){
             continue;
         }
@@ -306,7 +327,8 @@ void Game::Move(Direction dir)
         gameState = GameState::CLEARED;
     }
 
-    map->PrintAll();
+    // map->IsCleared();
+    
 
     // UNDO STACK
 
@@ -323,30 +345,9 @@ void Game::Move(Direction dir)
     // latestMap.push_back(s);
 
     
-    std::vector<std::vector<int>> latestMap;
-    for(auto o:map->objects[ObjectType::BOX]){
-        std::vector<int> location;
-        // s = "Box ";
-        // s = s + o->GetIcon() + " " + (char)o->parent->row + " " + (char)o->parent->col;
-        // s = s + (char)o->parent->row + " " + (char)o->parent->col;
+    
 
-        location.push_back(o->parent->row);
-        location.push_back(o->parent->col);
-        latestMap.push_back(location);
-    }
-    for(auto o:map->objects[ObjectType::PLAYER]){
-        std::vector<int> location;
-        // s = "Player ";
-        // s = "";
-        // s = s + o->GetIcon() + " " + (char)o->parent->row + " " + (char)o->parent->col;
-        // s = s + (char)o->parent->row + " " + (char)o->parent->col;
-        // latestMap.push_back(s);
-        location.push_back(o->parent->row);
-        location.push_back(o->parent->col);
-        latestMap.push_back(location);
-    }
-
-    undoStack.push(latestMap);
+    map->PrintAll();
     //////////   TODO END   ////////////////////////////////////
 }
 
@@ -362,29 +363,38 @@ void Game::Undo()
     // 5. Check if the game’s clear condition is met, and change the game state.
     // 6. Print the map.
 
-    map->RemoveGhosts();
-
-    std::vector<std::vector<int>> latest;
-    // int ObjSize = map->objects[ObjectType::BOX].size()+map->objects[ObjectType::PLAYER].size();
-    for(int i=0;i<map->objects[ObjectType::BOX].size();i++){
-        map->objects[ObjectType::BOX][i]->parent->row = latest[i][0];
-        map->objects[ObjectType::BOX][i]->parent->col = latest[i][1];
-    }
-    for(int i=0;i<map->objects[ObjectType::PLAYER].size();i++){
-        map->objects[ObjectType::PLAYER][i]->parent->row = latest[i][0];
-        map->objects[ObjectType::PLAYER][i]->parent->col = latest[i][1];
-    }
-
-    map->SpawnGhosts();
-
-    if(map->IsCleared() == false){
-        gameState = GameState::PLAYING;
+    if(undoStack.empty()){
+        return;
     }
     else{
-        gameState = GameState::CLEARED;
-    }
+        map->RemoveGhosts();
+        std::vector<Cell*> latest = undoStack.top();
+        undoStack.pop();
+        // int ObjSize = map->objects[ObjectType::BOX].size()+map->objects[ObjectType::PLAYER].size();
+        for(int i=0;i<map->objects[ObjectType::BOX].size();i++){
+            // Cell* tmp = map->objects[ObjectType::BOX][i]->parent;
+            // map->objects[ObjectType::BOX][i]->parent = latest[i];
+            latest[i]->SwapObject(map->objects[ObjectType::BOX][i]->parent);
+        }
+        for(int i=0;i<map->objects[ObjectType::PLAYER].size();i++){
+            int count = i + map->objects[ObjectType::BOX].size();
+            // Cell* tmp = map->objects[ObjectType::PLAYER][i]->parent;
+            //  = latest[count];
+            // latest[count] = tmp;
+            latest[count]->SwapObject(map->objects[ObjectType::PLAYER][i]->parent);
+        }
 
-    map->PrintAll();
+        map->SpawnGhosts();
+
+        if(map->IsCleared() == false){
+            gameState = GameState::PLAYING;
+        }
+        else{
+            gameState = GameState::CLEARED;
+        }
+
+        map->PrintAll();
+    }
 
     //////////   TODO END   ////////////////////////////////////
 }

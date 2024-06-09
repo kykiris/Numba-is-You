@@ -41,7 +41,7 @@ bool CellObjBase::TryMove(Direction dir)
     if(parent->GetNeighbor(dir)!=nullptr){
         
         //check its cell type
-        if(parent->cellType!=CellType::WALL){
+        if(parent->GetNeighbor(dir)->cellType!=CellType::WALL){
             //check its object
             // parent->GetNeighbor(dir)->GetObject()
             if(parent->GetNeighbor(dir)->GetObject()==nullptr){
@@ -84,14 +84,14 @@ void CellObjBase::InitItem(char itemIcon)
         this->item = new Operator(this, OpType::MUL);
     }
     else if(itemIcon == '='){
-        Equal* newEqual = new Equal(this);
+        this->item = new Equal(this);
         // this->item = new Equal(this);
         
-        this->item = newEqual;
-        parent->parent->equals.push_back(newEqual);
+        // this->item = newEqual;
+        // parent->parent->equals.push_back(newEqual);
     }
     else if(itemIcon >= '0' && itemIcon <= '9'){
-        this->item = new Number(this, itemIcon-'0');
+        this->item = new Number(this, (int)(itemIcon-'0'));
     }
     else if(itemIcon == '@'){
         DO_NOTHING;

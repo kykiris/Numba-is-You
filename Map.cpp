@@ -53,8 +53,9 @@ void Map::Initialize(int rowsize, int colsize, std::istream& ist)
         Cell* eachCell = 0;
         for(char c:line){
             if(c>='0' && c<='9'){
-                eachCell = new Home(this, i, j);
+                eachCell = new Home(this, i, j, c);
                 cells[i].push_back(eachCell);
+                // cells[i][j]->SetNum(c);
                 homes.push_back(eachCell);
             }
             else if(c == '#'){
@@ -188,7 +189,9 @@ void Map::SpawnGhosts()
     // For every equal, evaluate left/upper expression, get result string, and spawn ghosts.
 
     // selection sort : ex. (row, col) = (1,1), (1,2), (2,3), (2,5), (4,7)
-    
+    if(equals.empty()){
+        return;
+    }
     for(int i=0;i<equals.size()-1;i++){
         Equal* tmp;
         int min_index = i+1;
@@ -318,20 +321,27 @@ void Map::SpawnGhosts()
                 break;
             }
             Cell* newCell = GetCell(row, col);
-            if(newCell->GetObject()->GetType() == ObjectType::BOX || newCell->GetObject()->GetType() == ObjectType::PLAYER){
+            if(newCell->GetObject()!=nullptr && (newCell->GetObject()->GetType() == ObjectType::BOX || newCell->GetObject()->GetType() == ObjectType::PLAYER)){
                 continue;
             }
-            else if(newCell->GetObject()->GetType() == ObjectType::GHOST){
-                if(newCell->GetObject()->GetItem()->GetIcon() > g){
+            else if(newCell->GetObject()!=nullptr && newCell->GetObject()->GetType() == ObjectType::GHOST){
+                //if(newCell->GetObject()->GetItem()!=nullptr && newCell->GetObject()->GetItem()->GetIcon() > g){
+                if(newCell->GetIcon()!=' ' && newCell->GetIcon() >= g){
                     continue;
                 }
             }
-            if(newCell->GetObject()->GetItem()!=nullptr && newCell->GetObject()->GetItem()->GetType() == ItemType::EQUALS){
-                continue;
+            if(newCell!=nullptr && newCell->GetIcon()=='='){
+                break;
             }
-            CellObjBase* newGhost = new Ghost(newCell);
-            newGhost->InitItem(g); // g is char
-            this->objects[ObjectType::GHOST].push_back(newGhost);
+            // CellObjBase* newGhost = new Ghost(newCell);
+            // newGhost->InitItem(g); // g is char
+            // newGhost->parent = newCell;
+            // newGhost->parent->
+            newCell->InitObject("Ghost");
+            newCell->GetObject()->InitItem(g);
+            // if(newGhost->parent->GetIcon()!=g) delete newGhost;
+            // this->objects[ObjectType::GHOST].push_back(newCell->GetObject());
+            // this->objects[ObjectType::GHOST][]
         }
 
         // TODO: NOTE: MAKE GHOST OBJ, after MAKE IT -> edit below
@@ -473,7 +483,7 @@ void Map::SpawnGhosts()
                 break;
             }
             Cell* newCell = GetCell(row, col);
-            if(newCell->GetObject()->GetType() == ObjectType::BOX || newCell->GetObject()->GetType() == ObjectType::PLAYER){
+            if(newCell->GetObject()->GetItem()!=nullptr && newCell->GetObject()->GetType() == ObjectType::BOX || newCell->GetObject()->GetType() == ObjectType::PLAYER){
                 continue;
             }
             else if(newCell->GetObject()->GetType() == ObjectType::GHOST){
@@ -504,6 +514,8 @@ void Map::RemoveGhosts()
     // Remove every ghosts and clear this->objects[GHOST].
 
     for(auto o:this->objects[ObjectType::GHOST]){
+        o->parent = nullptr;
+        // o->GetItem();
         delete o;
         o = nullptr;
     }

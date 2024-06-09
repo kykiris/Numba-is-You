@@ -19,9 +19,9 @@ public:
     // Implement Cell::GetIcon.
     // Default icon is ' ', but if this cell has an object, then return the object's icon.
 
-    virtual AttrType GetAttr() const;
-    virtual ColorPair GetColorPair() const;
-    virtual char GetIcon() const;
+    // virtual AttrType GetAttr() const;
+    // virtual ColorPair GetColorPair() const;
+    // virtual char GetIcon() const;
 
     //////////   TODO END   ////////////////////////////////////
 };

@@ -22,7 +22,7 @@ public:
     virtual ItemType GetType() const = 0;
     virtual char GetIcon() const = 0;
 
-    virtual int GetNumber();
+    // virtual int GetNumber();
 
     //////////   TODO END   ////////////////////////////////////
 };
