@@ -23,6 +23,9 @@ CellObjBase::~CellObjBase()
     // item = nullptr;
     // parent = nullptr;
 
+    // delete parent->GetObject();
+    //???
+
     //////////   TODO END   ////////////////////////////////////
 }
 

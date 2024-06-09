@@ -44,6 +44,7 @@ void Cell::InitObject(const std::string& objType)
     }
     else if(objType == "Ghost"){
         obj = new Ghost(this);
+        // obj->InitItem(objType[0]);
         parent->objects[ObjectType::GHOST].push_back(obj);
     }
     else{
@@ -152,10 +153,18 @@ char Cell::GetIcon() const
             return ' ';
         }
         else{
-            return obj->GetIcon();
+            if(obj->GetType() == ObjectType::GHOST){
+                return obj->GetItem()->GetIcon();
+            }
+            else{
+                return obj->GetIcon();
+            }
         }
     }
 
+    // if(obj!=nullptr && ){
+        
+    // }
     //////////   TODO END   ////////////////////////////////////
 }
 

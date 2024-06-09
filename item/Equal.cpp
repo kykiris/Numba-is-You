@@ -76,11 +76,26 @@ std::string Equal::GetExpression(Direction dir){
     // else{
     //     isTrue = false;
     // }
-    while(nCell!=nullptr && nCell->GetIcon()!=' '){
+    while(nCell!=nullptr){
         if(nCell->GetIcon() == '='){
             break;
         }
-        s.push(nCell->GetIcon());
+        // int x=0;
+        // for(int i=0;i<parent->parent->parent->objects[ObjectType::GHOST].size();i++){
+        //     x++;
+        // }
+        char n = nCell->GetIcon();
+        if(n==' '){
+            for(auto a:nCell->parent->objects[ObjectType::GHOST]){
+                if(a->parent->row == nCell->row && a->parent->col == nCell->col){
+                    n == a->GetItem()->GetIcon();
+                }
+            }
+        }
+        if(n==' '){
+            break;
+        }
+        s.push(n);
         nCell = NeighborCell(dir, nCell);
     }
     nCell = nullptr;
@@ -126,8 +141,13 @@ std::string Equal::GetExpression(Direction dir){
         else if(s.top()=='='){
             // availExp = false;
             break;
+        }else{
+            s.pop();
+            break;
         }
-
+        if(s.empty()){
+            break;
+        }
         // case 1: if the first char is '+' or '-', the second char should be number
         // if(i==1 && (exp[0]=='+' || exp[0]=='-')){
         //     // this includes cases exp with another operator

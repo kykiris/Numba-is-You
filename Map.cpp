@@ -192,6 +192,8 @@ void Map::SpawnGhosts()
     if(equals.empty()){
         return;
     }
+
+    // row arrange
     for(int i=0;i<equals.size()-1;i++){
         Equal* tmp;
         int min_index = i+1;
@@ -218,10 +220,6 @@ void Map::SpawnGhosts()
         }
         tmp = nullptr;
     }
-    
-    //sort end
-
-
     // Note: Ghost Making Algorithm
     for(auto e:equals){
         std::string s = e->GetExpression(Direction::LEFT);
@@ -343,8 +341,9 @@ void Map::SpawnGhosts()
             if(newCell!=nullptr && newCell->GetIcon()=='='){
                 break;
             }
-            
+            std::string g1 = "" + g;
             newCell->InitObject("Ghost");
+            // newCell->InitObject(g1);
             newCell->GetObject()->InitItem(g);
         }
         }
@@ -515,12 +514,178 @@ void Map::SpawnGhosts()
                 break;
             }
             
+            // std::string g1 = "" + g;
             newCell->InitObject("Ghost");
+            // newCell->InitObject(g1);
             newCell->GetObject()->InitItem(g);
         }
         }
     }
     //////////   TODO END   ////////////////////////////////////
+
+
+
+
+
+
+
+    // row arrange
+    for(int i=0;i<equals.size()-1;i++){
+        Equal* tmp;
+        int min_index = i+1;
+        for(int j=i+1;j<equals.size();j++){
+            if(equals[min_index]->parent->parent->row > equals[j]->parent->parent->row){
+                //TODO
+                min_index = j;
+            }
+            else if(equals[min_index]->parent->parent->row == equals[j]->parent->parent->row){
+                if(equals[min_index]->parent->parent->col > equals[j]->parent->parent->col){
+                    min_index = j;
+                }
+            }
+        }
+        if(equals[min_index]->parent->parent->row < equals[i]->parent->parent->row){
+            tmp = equals[i];
+            equals[i] = equals[min_index];
+            equals[min_index] = tmp;
+        }
+        else if(equals[min_index]->parent->parent->row == equals[i]->parent->parent->row && equals[min_index]->parent->parent->col < equals[i]->parent->parent->col){
+            tmp = equals[i];
+            equals[i] = equals[min_index];
+            equals[min_index] = tmp;
+        }
+        tmp = nullptr;
+    }
+    // Note: Ghost Making Algorithm
+    for(auto e:equals){
+        std::string s = e->GetExpression(Direction::LEFT);
+        if(s.length()!=0){
+        int i=0;
+        std::vector<std::string> ExpToVec; // each item is here
+        std::vector<char> eachNum; // to make n digit num
+        for(auto c:s){
+            // if(c=='*' || c=='+' || c=='-'){
+                
+            // }
+            if(c>='0' && c<='9'){
+                eachNum.push_back(c);
+            }
+            else{
+                // push back eachNum to ExpToVec
+                if(!eachNum.empty()){
+                    std::string x;
+                    for(auto y:eachNum){
+                        x = x+y;
+                    }
+                    eachNum.clear();
+                    ExpToVec.push_back(x);
+                }
+                std::string z;
+                z = z + c;
+                ExpToVec.push_back(z);
+            }
+        }
+        if(!eachNum.empty()){
+            std::string x;
+            for(auto y:eachNum){
+                x = x+y;
+            }
+            eachNum.clear();
+            ExpToVec.push_back(x);
+        }
+
+
+        // let's calculate...
+        std::string op = "+";
+        int num = 0;
+        for(auto st:ExpToVec){
+            if(st=="+" || st=="-" || st=="*"){
+                op = st;
+            }
+            else if(st[0]>='0' && st[0]<='9'){
+                int n = 0;
+                for(int i=0;i<st.length();i++){
+                    int dig = st[i] - '0';
+                    for(int j=0;j<st.length()-1-i;j++){
+                        dig *= 10;
+                    }
+                    n += dig;
+                }
+                if(op=="+"){
+                    num += n;
+                }
+                else if(op=="-"){
+                    num -= n;
+                }
+                else if(op== "*"){
+                    num *= n;
+                }
+            }
+        
+        }
+
+        //now num will be ghost.
+
+        //first, let's make integer to char[]
+        std::vector<char> preGhost;
+        std::stack<char> GhostStack;
+        if(num<0){
+            preGhost.push_back('-');
+            num*=-1;
+        }
+        
+        int prevCal = num; // mogt
+        int afterCal = 0; //narmerge
+        while(1){
+            
+            afterCal = prevCal % 10;
+            prevCal = prevCal / 10;
+
+            char c = afterCal + '0';
+            if(prevCal == 0){
+                GhostStack.push(c);
+                break;
+            }
+            else{
+                GhostStack.push(c);
+            }
+        }
+        while(!GhostStack.empty()){
+            preGhost.push_back(GhostStack.top());
+            GhostStack.pop();
+        }
+
+        // Cell* GhostMaker = e->parent->parent;
+        int row = e->parent->parent->row;
+        int col = e->parent->parent->col;
+        for(auto g:preGhost){
+            // Direction::RIGHT
+            col++;
+            if(col >= this->GetColsize()){
+                break;
+            }
+            Cell* newCell = GetCell(row, col);
+            if(newCell->GetObject()!=nullptr && (newCell->GetObject()->GetType() == ObjectType::BOX || newCell->GetObject()->GetType() == ObjectType::PLAYER)){
+                continue;
+            }
+            else if(newCell->GetObject()!=nullptr && newCell->GetObject()->GetType() == ObjectType::GHOST){
+                //if(newCell->GetObject()->GetItem()!=nullptr && newCell->GetObject()->GetItem()->GetIcon() > g){
+                if(newCell->GetIcon()!=' ' && newCell->GetIcon() >= g){
+                    continue;
+                }
+            }
+            if(newCell!=nullptr && newCell->GetIcon()=='='){
+                break;
+            }
+            std::string g1 = "";
+            g1 = g1 + g;
+            newCell->InitObject("Ghost");
+            // newCell->InitObject(g1);
+            newCell->GetObject()->InitItem(g);
+        }
+        }
+        // TODO: NOTE: MAKE GHOST OBJ, after MAKE IT -> edit below
+    }
 }
 
 
