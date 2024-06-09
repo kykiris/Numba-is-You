@@ -196,6 +196,10 @@ void Game::StartSolve(std::string filename)
             }
             
             Move((Direction)((int)cmd - (int)Command::UP));
+
+            if(gameState == GameState::CLEARED){
+                break;
+            }
         }
         // gameState = GameState::PLAYING;
     }
