@@ -225,6 +225,7 @@ void Map::SpawnGhosts()
     // Note: Ghost Making Algorithm
     for(auto e:equals){
         std::string s = e->GetExpression(Direction::LEFT);
+        if(s.length()!=0){
         int i=0;
         std::vector<std::string> ExpToVec; // each item is here
         std::vector<char> eachNum; // to make n digit num
@@ -286,6 +287,7 @@ void Map::SpawnGhosts()
                     num *= n;
                 }
             }
+        
         }
 
         //now num will be ghost.
@@ -297,13 +299,21 @@ void Map::SpawnGhosts()
             preGhost.push_back('-');
             num*=-1;
         }
-        int afterCal = num;
-        while(afterCal % 10 != 0){
-            afterCal = afterCal % 10;
+        
+        int prevCal = num; // mogt
+        int afterCal = 0; //narmerge
+        while(1){
+            
+            afterCal = prevCal % 10;
+            prevCal = prevCal / 10;
+
             char c = afterCal + '0';
             GhostStack.push(c);
-            if(afterCal<10){
+            if(prevCal == 0){
                 break;
+            }
+            else{
+                GhostStack.push(c);
             }
         }
         while(!GhostStack.empty()){
@@ -337,7 +347,7 @@ void Map::SpawnGhosts()
             newCell->InitObject("Ghost");
             newCell->GetObject()->InitItem(g);
         }
-
+        }
         // TODO: NOTE: MAKE GHOST OBJ, after MAKE IT -> edit below
     }
 
@@ -383,10 +393,11 @@ void Map::SpawnGhosts()
         }
         tmp = nullptr;
     }
-
+    
     // Note: Ghost Making Algorithm
     for(auto e:equals){
         std::string s = e->GetExpression(Direction::UP);
+        if(s.length()!=0){
         int i=0;
         std::vector<std::string> ExpToVec; // each item is here
         std::vector<char> eachNum; // to make n digit num
@@ -459,13 +470,20 @@ void Map::SpawnGhosts()
             preGhost.push_back('-');
             num*=-1;
         }
-        int afterCal = num;
-        while(afterCal % 10 != 0){
-            afterCal = afterCal % 10;
+        int prevCal = num; // mogt
+        int afterCal = 0; //narmerge
+        while(1){
+            
+            afterCal = prevCal % 10;
+            prevCal = prevCal / 10;
+
             char c = afterCal + '0';
             GhostStack.push(c);
-            if(afterCal<10){
+            if(prevCal == 0){
                 break;
+            }
+            else{
+                GhostStack.push(c);
             }
         }
         while(!GhostStack.empty()){
@@ -499,8 +517,8 @@ void Map::SpawnGhosts()
             newCell->InitObject("Ghost");
             newCell->GetObject()->InitItem(g);
         }
+        }
     }
-
     //////////   TODO END   ////////////////////////////////////
 }
 
