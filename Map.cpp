@@ -308,8 +308,8 @@ void Map::SpawnGhosts()
             prevCal = prevCal / 10;
 
             char c = afterCal + '0';
-            GhostStack.push(c);
             if(prevCal == 0){
+                GhostStack.push(c);
                 break;
             }
             else{
@@ -478,8 +478,9 @@ void Map::SpawnGhosts()
             prevCal = prevCal / 10;
 
             char c = afterCal + '0';
-            GhostStack.push(c);
+            
             if(prevCal == 0){
+                GhostStack.push(c);
                 break;
             }
             else{
