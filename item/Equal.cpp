@@ -8,7 +8,12 @@
 Equal::Equal(CellObjBase *obj): ItemBase(obj) {
     parent->parent->parent->equals.push_back(this);
 }
-Equal::~Equal(){}
+Equal::~Equal(){
+    // delete parent->parent;
+    delete parent;
+    // parent->parent = nullptr;
+    parent = nullptr;
+}
 
 bool inRange(int row, int col, Map* m);
 

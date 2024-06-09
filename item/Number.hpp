@@ -12,6 +12,7 @@ private:
 
 public:
     Number(CellObjBase* obj, int value);
+    ~Number();
     // int GetValue();
 
     //////////     TODO     ////////////////////////////////////
